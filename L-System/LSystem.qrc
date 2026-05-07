@@ -1,4 +1,6 @@
 <RCC>
-    <qresource prefix="LSystem">
+    <qresource prefix="/audio">
+        <file alias="background3.mp3">audio/background3.mp3</file>
+        <file alias="background.mp3">audio/background.mp3</file>
     </qresource>
 </RCC>
