@@ -1,55 +1,52 @@
+**Project**
+- **简介**: L-System 分形植物生成器是一个基于 Lindenmayer 系统（L-System）的可视化项目，使用 Qt（Widgets + Multimedia）实现分形植物的生成、动画生长、背景主题与声音效果。
 
+**Features**
+- **可视化生成**: 基于可配置的公理与重写规则生成分形植物。
+- **交互控制**: 支持迭代次数、角度、线段长度、植物预设、主题与动画速度实时调节。
+- **动画与音效**: 动画生长效果；生长短音效与背景音乐（支持多路径加载与 qrc 回退）。
+- **导出与保存**: 支持保存当前画面为 PNG 图片。
 
-### 一、 第一阶段功能总结 (Version 1.0)
+**Branches**
+- **main**: 初始版本（基础 L-System，可视化和核心交互）。包含[第一阶段.md](第一阶段.md)。
+- **phase-2**: 增强版本（完整 UI 控件、动画控制、保存等）。见 [第二阶段.md](第二阶段.md)。
+- **phase-3**: 当前增强版（背景主题、花朵装饰、音效与兼容性修复）。见 [第三阶段增强功能说明.md](第三阶段增强功能说明.md)。
 
-在这一阶段，成功实现了 L-System（Lindenmayer 系统）的核心机制，并将其可视化 。
+**Project Structure**
+- **L-System/**: 源代码与资源
+  - **LSystem.cpp / LSystem.h**: 主要窗口与逻辑实现
+  - **main.cpp**: 程序入口
+  - **LSystem.qrc**: Qt 资源（包含 audio 文件）
+  - **audio/**: 本地音频资源（background.mp3, background3.mp3）
+- **第一阶段.md / 第二阶段.md / 第三阶段增强功能说明.md**: 各阶段需求与实现说明
 
-* **核心逻辑实现**：构建了 `LSystemLogic` 类，能够根据定义的公理（Axiom）和产生式规则（Rules）进行字符串迭代生成。
-* **图形化渲染**：利用 Qt 框架的 `QPainter` 系统，将生成的抽象字符串（如 'F', '+', '-', '[', ']'）翻译为具体的几何动作（前进、旋转、分支状态保存）。
-* **分形数据结构**：引入了**栈（Stack）**结构来处理符号 `[` 和 `]`，实现了复杂的递归分支效果，使程序具备了生成自然植物形态的能力。
+**Build & Run (建议)**
+- 推荐使用 Qt Creator 打开工程 `L-System/CMakeLists.txt` 或 `L-System.sln`（Windows Visual Studio）。
 
----
+- 使用 CMake 命令行（示例，需根据本机 Qt 路径调整）：
+```bash
+mkdir build
+cd build
+cmake .. -DCMAKE_PREFIX_PATH="C:/Qt/6.x/your-msvc-path"   # 将此路径替换为你的 Qt 安装目录
+cmake --build . --config Debug
+```
+- 或直接使用 Visual Studio 打开 `L-System.sln` 并选择 Debug/Release 构建，然后运行 `LSystemPlant.exe`。
 
-### 二、 技术实现原理
+**Runtime Notes (音频与兼容性)**
+- 背景音乐加载策略：程序会首先在可执行文件附近查找 `audio/background3.mp3` / `audio/background.mp3`，找不到时回退到 qrc 资源并导出到临时目录再播放。这解决了部分构建环境下 qrc 直读 MP3 失败的问题。
+- 如果运行时无声音：
+  - 检查 `audio` 目录是否随可执行文件一起部署（`build` 下或可执行上级目录）。
+  - 查看控制台日志中关于 `QMediaPlayer::ResourceError` 或 `无法打开资源文件` 的警告，它们会给出缺失路径信息。
 
-1. **字符串重写**：
-* **公理**：`X`。
-* **规则**：`X -> F-[[X]+X]+F[+FX]-X`；`F -> FF`。
-* 通过迭代，短字符串呈指数级增长，包含了分形结构的每一个细节。
+**Troubleshooting**
+- 编辑器静态检查可能提示找不到 Qt 头文件（includePath），这是本地 IDE 配置问题，不影响运行，只需在构建环境配置 Qt include/lib 即可。
+- 如需复现或测试音频加载问题，可参考代码中的 `resolveBackgroundMusicPath()` 与 `extractResourceToTempFile()` 函数（文件：L-System/LSystem.cpp）。
 
+**How to explore branches**
+- 要查看每个阶段实现的差异：
+  - 切到对应分支 `main`, `phase-2`, `phase-3`。
+  - 例如在命令行：
+```bash
+git checkout phase-3
+```
 
-2. **海龟绘图逻辑 (Turtle Graphics)**：
-* 程序遍历生成的字符串，遇到 `F` 时在当前方向画线并移动坐标。
-* 遇到 `+` 或 `-` 时，改变当前旋转的角度（$25^\circ$）。
-* **关键技术点**：利用 `QTransform` 和 `std::stack` 保存当前坐标系的“快照”（位置和角度）。当遇到 `]` 时恢复快照，从而实现从侧枝回到主干的逻辑。
-
-
-
----
-
-### 三、 下一步优化建议 (Version 2.0 目标)
-
-为了符合大作业中关于“创新、创意”的要求，并冲击高分赛道 ，建议在下一阶段进行以下优化：
-
-#### 1. 动态交互 (增加 UI 控件)
-
-* **操作**：在 `.ui` 文件中添加 `QSlider`（滑动条）或 `QSpinBox`。
-* 
-**目的**：让用户可以实时调整**生长深度（迭代次数）**、**偏转角度**或**树枝长度**。这增加了程序的互动性 。
-
-
-
-#### 2. 视觉表现力美化
-
-* **随机扰动 (Stochastic L-System)**：在旋转角度中加入微小的随机偏差 `rand()`，让生成的树看起来更像真实的植物而非完美的几何体。
-* **颜色渐变**：根据迭代深度改变 `QPen` 的颜色。例如：底部用深棕色（树干），顶端分支用嫩绿色（树叶）。
-
-#### 3. 性能优化与安全
-
-* **防止卡死**：目前迭代 4 次效果很好，但 6 次以上字符串会极长。建议给迭代次数设置上限（如 6 或 7），防止程序未响应。
-* 
-**资源管理**：确保在析构函数中正确释放资源（虽然目前使用了栈对象，但未来若涉及动态内存需注意） 。
-
-
-
----
