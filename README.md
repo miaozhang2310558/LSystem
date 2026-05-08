@@ -9,8 +9,8 @@
 
 **Branches**
 - **main**: 初始版本（基础 L-System，可视化和核心交互）。包含[第一阶段.md](第一阶段.md)。
-- **phase-2**: 增强版本（完整 UI 控件、动画控制、保存等）。见 [第二阶段.md](第二阶段.md)。
-- **phase-3**: 当前增强版（背景主题、花朵装饰、音效与兼容性修复）。见 [第三阶段增强功能说明.md](第三阶段增强功能说明.md)。
+- **phase-2**: 增强版本（完整 UI 控件、动画控制、保存等）。见 [第二阶段.md](https://github.com/miaozhang2310558/LSystem/blob/phase-2/第二阶段.md)。
+- **phase-3**: 当前增强版（背景主题、花朵装饰、音效与兼容性修复）。见 [第三阶段增强功能说明.md](https://github.com/miaozhang2310558/LSystem/blob/phase-3/第三阶段增强功能说明.md)。
 
 **Project Structure**
 - **L-System/**: 源代码与资源
