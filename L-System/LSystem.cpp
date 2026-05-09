@@ -271,7 +271,7 @@ void LSystem::initUI()
             "</ul>"
             "<p><b>技术实现：</b></p>"
             "<p>基于 Qt 框架，使用 L-System 字符串重写算法和海龟绘图技术</p>"
-            "<p>版本：3.0 | 作者：AI 助手</p>");
+            "<p>版本：3.0 </p>");
     });
 
     auxButtonLayout->addWidget(colorBtn);
